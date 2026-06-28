@@ -1,0 +1,10 @@
+{
+  "name": "pdf-to-llm",
+  "version": "1.0.0",
+  "description": "Convert PDFs into LLM-digestible Markdown: local text/table/layout/image extraction with opendataloader-pdf, plus Claude vision descriptions of every figure, diagram, chart, plot and in-image table. Minimal context loss; output is self-contained.",
+  "author": {
+    "name": "Saptarshi",
+    "email": "saptarshireeju611@gmail.com"
+  },
+  "keywords": ["pdf", "markdown", "llm", "rag", "document", "conversion", "vision", "ocr"]
+}

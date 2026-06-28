@@ -1,0 +1,7 @@
+# Runtime venv lives in the user's home dir, never in the repo:
+# ~/.pdf-to-llm/venv
+__pycache__/
+*.pyc
+*_odl/
+*_llm.md
+.DS_Store

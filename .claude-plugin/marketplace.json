@@ -1,0 +1,17 @@
+{
+  "name": "saptarshi-tools",
+  "owner": {
+    "name": "Saptarshi",
+    "email": "saptarshireeju611@gmail.com"
+  },
+  "metadata": {
+    "description": "Saptarshi's personal Claude Code plugins."
+  },
+  "plugins": [
+    {
+      "name": "pdf-to-llm",
+      "source": "./",
+      "description": "Convert PDFs into LLM-digestible Markdown with vision-described figures, diagrams, charts and tables."
+    }
+  ]
+}
