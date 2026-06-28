@@ -51,10 +51,27 @@ as notes.
 | Stage | What runs | What it does |
 |------|-----------|--------------|
 | **1. Extract** | [`opendataloader-pdf`](https://github.com/opendataloader-project/opendataloader-pdf) (local, offline) | Pulls out text, tables, layout, reading order, and saves every embedded image as a file. |
-| **2. Enrich** | Claude vision (the agent) | Reads every extracted image and writes a detailed inline description / transcription — diagrams → flow, plots → axes & values, image-tables → real Markdown tables, photos → captions. |
+| **2. Enrich** | Claude vision (your session's own model — no API key) | Reads every extracted image and writes a detailed inline description / transcription — diagrams → flow, plots → axes & values, image-tables → real Markdown tables, photos → captions. |
 
 Stage 1 is deterministic and never leaves your machine. Stage 2 is where the
 context that other tools drop gets recovered.
+
+> ### No API key. No local AI model.
+>
+> The vision in Stage 2 is performed by **the same Claude model already running your
+> chat or Claude Code session** — the plugin just instructs it to read and describe
+> each image. There is **nothing extra to set up**:
+>
+> - ❌ No `ANTHROPIC_API_KEY` or any other API key
+> - ❌ No local ML model, GPU, OCR engine, or multi-gigabyte download
+> - ✅ Just uses the Claude you're already talking to
+>
+> The only local dependency is the lightweight `opendataloader-pdf` extractor
+> (Stage 1), which auto-installs into an isolated venv on first run.
+>
+> *(Caveat: running `scripts/convert_pdf.py` directly — outside of Claude — performs
+> only Stage 1 extraction. The figure descriptions require a Claude agent to drive
+> them, which is exactly what happens when you use the `/pdf2md` command or the skill.)*
 
 ---
 
