@@ -161,4 +161,4 @@ pdf-to-llm-plugin/
 
 ## License
 
-MIT
+[MIT](LICENSE) © 2026 Saptarshi Nag
