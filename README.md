@@ -1,5 +1,10 @@
 # pdf-to-llm
 
+<!-- Optional hero banner: generate an image (see the prompt in the project notes),
+     save it as assets/hero.png, then uncomment the line below.
+<p align="center"><img src="assets/hero.png" alt="pdf-to-llm — PDF to LLM-ready Markdown" width="680"></p>
+-->
+
 **Turn any PDF into Markdown an LLM can actually understand — including the figures.**
 
 A Claude Code plugin that converts PDFs to clean, self-contained Markdown with
@@ -14,35 +19,37 @@ meaning — it *describes them inline* using Claude's vision.
 Most PDF→Markdown tools extract the text and leave you with this:
 
 ```markdown
-### uGMRT RFI Filtering System: Development Flow
-![](_page_7_Figure_1.jpeg)
+## System Architecture
+![](page_4_figure_2.png)
 ```
 
-An LLM reading that learns nothing from the figure — and in slide decks or
-technical papers, **the figures are the content**. The actual development pipeline,
-the axis values on a plot, the rows of a table rendered as an image: all lost.
+An LLM reading that learns **nothing** from the figure. And in slide decks,
+technical papers, and reports, the figures *are* the content: the architecture
+diagram, the trend and axis values on a chart, the rows of a table that was pasted
+in as an image — all gone.
 
 ## The fix
 
 `pdf-to-llm` runs in two stages and produces this instead:
 
 ```markdown
-### uGMRT RFI Filtering System: Development Flow
+## System Architecture
 
-> **[Figure: Development pipeline + before/after results]**
-> Four-stage flow connected by ↔ arrows:
-> 1. **Development** — Algorithm Selection, Simulation, Implementation, Optimization
-> 2. **Testing** — Module Level, Engineering Tests, Controlled Tests
-> 3. **Field Trials** — Simultaneous Testing, Astronomical tests
-> 4. **Release** — Recommended settings, Book-keeping, Feature Addition
+> **[Figure: Request flow]**
+> Left-to-right block diagram:
+> 1. **Client** sends an HTTPS request →
+> 2. **API Gateway** (authentication + rate limiting) →
+> 3. **Service layer** — three microservices: Orders, Inventory, Billing →
+> 4. **PostgreSQL** primary, with a read replica
 >
-> Below: an unfiltered vs. filtered timeseries (~9000 samples) showing impulsive
-> RFI spikes removed, and a clean radio image of the released system.
+> A dashed arrow shows the Billing service publishing events to a **Kafka** queue,
+> consumed by an Analytics worker.
 ```
 
-The result is a single `<name>_llm.md` that is fully understandable **without the
-original images** — ready to paste into a chat, drop into a RAG pipeline, or keep
-as notes.
+Charts become their axes, series, and key values; tables-as-images become real
+Markdown tables; photos get a one-line caption. The result is a single
+`<name>_llm.md` that is fully understandable **without the original images** —
+ready to paste into a chat, drop into a RAG pipeline, or keep as notes.
 
 ---
 
@@ -159,6 +166,25 @@ pdf-to-llm-plugin/
 
 ---
 
+## Acknowledgements
+
+This plugin is built on top of, and would not work without,
+[**OpenDataLoader PDF**](https://github.com/opendataloader-project/opendataloader-pdf)
+by the [opendataloader-project](https://github.com/opendataloader-project) — the
+local engine that does all of Stage 1 (text, table, layout, and image extraction).
+It is an excellent open-source project; please consider starring it.
+
+- **OpenDataLoader PDF** — © opendataloader-project, licensed under
+  [Apache License 2.0](https://github.com/opendataloader-project/opendataloader-pdf/blob/main/LICENSE).
+
+`pdf-to-llm` only orchestrates that extractor and adds the Claude-driven
+vision-enrichment stage on top; all credit for the underlying PDF parsing belongs
+to its authors.
+
 ## License
 
 [MIT](LICENSE) © 2026 Saptarshi Nag
+
+This project bundles no third-party source code. The runtime dependency
+`opendataloader-pdf` (Apache-2.0) is installed separately into an isolated venv at
+first run and remains under its own license.
